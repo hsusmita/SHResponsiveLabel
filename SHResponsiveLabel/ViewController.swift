@@ -32,7 +32,9 @@ class ViewController: UIViewController {
       RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
       RLHighlightedForegroundColorAttributeName:UIColor.greenColor()])
     
-    customLabel.setAttributedTruncationToken(token, action: action)
+    let imageToken = UIImage(named: "Add-Caption-Plus")
+    customLabel.setTruncationIndicatorImage(imageToken!, size: CGSizeMake(20, 20), action: action)
+//    customLabel.setAttributedTruncationToken(token, action: action)
     customLabel.customTruncationEnabled = true
     
     //Detects email in text

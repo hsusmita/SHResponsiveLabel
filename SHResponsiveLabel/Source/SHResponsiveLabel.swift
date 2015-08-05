@@ -358,18 +358,17 @@ public class SHResponsiveLabel:UILabel {
     }
   }
   
-  func setTruncationIndicatorImage(image:UIImage,size:CGSize,action:PatternDescriptor) {
-//    InlineTextAttachment *textAttachment = [[InlineTextAttachment alloc]init];
-//    textAttachment.image = image;
-//    textAttachment.fontDescender = self.font.descender;
-//    textAttachment.bounds = CGRectMake(0, -self.font.descender - self.font.lineHeight/2,size.width,size.height);
-//    NSAttributedString *imageAttributedString = [NSAttributedString attributedStringWithAttachment:textAttachment];
-//    
-//    NSAttributedString *paddingString = [[NSAttributedString alloc]initWithString:@" "];
-//    NSMutableAttributedString *finalString = [[NSMutableAttributedString alloc]initWithAttributedString:paddingString];
-//    [finalString appendAttributedString:imageAttributedString];
-//    [finalString appendAttributedString:paddingString];
-//    [self setAttributedTruncationToken:finalString withAction:action];
+  func setTruncationIndicatorImage(image:UIImage,size:CGSize,action:PatternTapResponder) {
+    var textAttachment = InlineTextAttachment();
+    textAttachment.image = image;
+    textAttachment.fontDescender = self.font.descender;
+    textAttachment.bounds = CGRectMake(0, -self.font.descender - self.font.lineHeight/2,size.width,size.height);
+    var imageAttributedString = NSAttributedString(attachment: textAttachment)
+    var paddingString = NSAttributedString(string: " ")
+    var finalString = NSMutableAttributedString(attributedString: paddingString)
+    finalString.appendAttributedString(imageAttributedString)
+    finalString.appendAttributedString(paddingString)
+    setAttributedTruncationToken(finalString, action: action)
   }
   
   func enableHashTagDetection(dictionary:[String:AnyObject]) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6929B3561B78C7740098A690 /* InlineTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6929B3551B78C7740098A690 /* InlineTextAttachment.swift */; };
 		693AD01D1B6B531F00A538B2 /* TouchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693AD01C1B6B531F00A538B2 /* TouchHandler.swift */; };
 		693AD01F1B6B56A100A538B2 /* TruncationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693AD01E1B6B56A100A538B2 /* TruncationHandler.swift */; };
 		69C7CF7A1B66390C002C9CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C7CF791B66390C002C9CA3 /* AppDelegate.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6929B3551B78C7740098A690 /* InlineTextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineTextAttachment.swift; sourceTree = "<group>"; };
 		693AD01C1B6B531F00A538B2 /* TouchHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchHandler.swift; sourceTree = "<group>"; };
 		693AD01E1B6B56A100A538B2 /* TruncationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TruncationHandler.swift; sourceTree = "<group>"; };
 		69C7CF741B66390C002C9CA3 /* SHResponsiveLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHResponsiveLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +130,7 @@
 				69C7CF9E1B66457B002C9CA3 /* PatternDescriptor.swift */,
 				693AD01E1B6B56A100A538B2 /* TruncationHandler.swift */,
 				693AD01C1B6B531F00A538B2 /* TouchHandler.swift */,
+				6929B3551B78C7740098A690 /* InlineTextAttachment.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6929B3561B78C7740098A690 /* InlineTextAttachment.swift in Sources */,
 				69C7CF7C1B66390C002C9CA3 /* ViewController.swift in Sources */,
 				69C7CF7A1B66390C002C9CA3 /* AppDelegate.swift in Sources */,
 				693AD01D1B6B531F00A538B2 /* TouchHandler.swift in Sources */,
