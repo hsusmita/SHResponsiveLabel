@@ -295,7 +295,7 @@ public class SHResponsiveLabel:UILabel {
   func shouldAddAttributesAtRange(range:NSRange)-> Bool {
     let truncationRange = rangeOfTruncationToken()
     let isTruncationRange = NSEqualRanges(range, truncationRange)
-    let isRangeOutOfBound = isTruncationRange && (truncationRange.location + truncationRange.length) > self.textStorage.length
+    let isRangeOutOfBound = (truncationRange.location + truncationRange.length) < range.location
     let doesIntersectTruncationRange = NSIntersectionRange(range, truncationRange).length > 0
     return ((!isRangeOutOfBound && !doesIntersectTruncationRange) || isTruncationRange)
   }
