@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>SHResponsiveLabel by hsusmita</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">SHResponsiveLabel</h1>
+      <h2 class="project-tagline">UILabel subclass written in Swift that supports clickable custom truncation token as well as supports pattern highlighting</h2>
+      <a href="https://github.com/hsusmita/SHResponsiveLabel" class="btn">View on GitHub</a>
+      <a href="https://github.com/hsusmita/SHResponsiveLabel/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/hsusmita/SHResponsiveLabel/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<ol>
+<li>It can detect pattern specified by regular expression and apply style like font, color etc.</li>
+<li>It allows to replace default ellipse with tapable attributed string to mark truncation</li>
+<li>Convenience methods are provided to detect hashtags, username handler and URLs</li>
+</ol>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>Add following lines in your pod file<br>
+pod 'SHResponsiveLabel', '~&gt; 1.0.1'</p>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>The following snippets explain the usage of public methods. These snippets assume an instance of ResponsiveLabel named "customLabel".</p>
+
+<h4>
+<a id="pattern-detection" class="anchor" href="#pattern-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pattern Detection</h4>
+
+<pre><code>//Detects email in text
+let emailRegexString = "A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+var error = NSErrorPointer()
+let regex = NSRegularExpression(pattern: emailRegexString,
+                                options: NSRegularExpressionOptions.allZeros, 
+                                  error: error)
+let descriptor = PatternDescriptor(regularExpression: regex!, 
+                                          searchType: PatternSearchType.All,
+                                   patternAttributes:[NSForegroundColorAttributeName:UIColor.redColor()])
+customLabel.enablePatternDetection(descriptor)
+</code></pre>
+
+<h4>
+<a id="string-detection" class="anchor" href="#string-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>String Detection</h4>
+
+<pre><code>//Detect the word "text"
+let tapResponder = PatternTapResponder { (tappedString) -&gt; (Void) in
+      println("tapped = "+tappedString)
+}
+let attributes = [NSForegroundColorAttributeName:UIColor.brownColor(),
+                     RLTapResponderAttributeName:action as AnyObject]
+self.customLabel.enableStringDetection("text", dictionary:attributes)
+</code></pre>
+
+<h4>
+<a id="array-of-string-detection" class="anchor" href="#array-of-string-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Array of String Detection</h4>
+
+<pre><code>//Detect the word "text" and "some"
+let tapResponder = PatternTapResponder { (tappedString) -&gt; (Void) in
+   println("tapped = "+tappedString)
+}
+let attributes = [NSForegroundColorAttributeName:UIColor.brownColor(),
+                     RLTapResponderAttributeName:action as AnyObject]
+self.customLabel.enableDetectionForStrings(["text","some"], dictionary: attributes)
+</code></pre>
+
+<h4>
+<a id="hashtag-detection" class="anchor" href="#hashtag-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>HashTag Detection</h4>
+
+<pre><code>let hashtagTapAction = PatternTapResponder { (tappedString) -&gt; (Void) in
+  println("Hashtag Tapped = "+tappedString)
+ }
+self.customLabel.enableHashTagDetection([NSForegroundColorAttributeName:UIColor.redColor(),
+                                            RLTapResponderAttributeName:hashtagTapAction])
+</code></pre>
+
+<h4>
+<a id="username-handle-detection" class="anchor" href="#username-handle-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Username Handle Detection</h4>
+
+<pre><code>let userhandleTapAction = PatternTapResponder { (tappedString) -&gt; (Void) in
+  println("Username Handle Tapped = " + tappedString)
+}
+self.customLabel.enableUserHandleDetection([NSForegroundColorAttributeName:UIColor.grayColor(),
+                                               RLTapResponderAttributeName:userhandleTapAction])
+</code></pre>
+
+<h4>
+<a id="url-detection" class="anchor" href="#url-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>URL Detection</h4>
+
+<pre><code>let urlTapAction  = PatternTapResponder { (tappedString) -&gt; (Void) in
+  println("URL Tapped = " + tappedString)
+}
+self.customLabel.enableURLDetection([NSForegroundColorAttributeName:UIColor.cyanColor(),
+                                      NSUnderlineStyleAttributeName:0,
+                                        RLTapResponderAttributeName:urlTapAction])
+</code></pre>
+
+<h4>
+<a id="highlight-patterns-on-tap" class="anchor" href="#highlight-patterns-on-tap" aria-hidden="true"><span class="octicon octicon-link"></span></a>Highlight Patterns On Tap</h4>
+
+<p>To highlight patterns, one can set the attributes:</p>
+
+<ul>
+<li>RLHighlightedForegroundColorAttributeName</li>
+<li>RLHighlightedBackgroundColorAttributeName</li>
+</ul>
+
+<pre><code>let userhandleTapAction = PatternTapResponder { (tappedString) -&gt; (Void) in
+  println("Username Handle Tapped = " + tappedString)
+}
+self.customLabel.enableUserHandleDetection([NSForegroundColorAttributeName:UIColor.grayColor(),                                                              RLHighlightedForegroundColorAttributeName:UIColor.greenColor(),
+                                 RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
+                                               RLTapResponderAttributeName:userhandleTapAction])
+</code></pre>
+
+<h4>
+<a id="custom-truncation-token" class="anchor" href="#custom-truncation-token" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Truncation Token</h4>
+
+<h5>
+<a id="set-attributed-string-as-truncation-token" class="anchor" href="#set-attributed-string-as-truncation-token" aria-hidden="true"><span class="octicon octicon-link"></span></a>Set attributed string as truncation token</h5>
+
+<pre><code>let token = NSAttributedString(string: "...More",
+                            attributes: [NSFontAttributeName:self.customLabel.font,
+                              NSForegroundColorAttributeName:UIColor.blueColor(),
+                   RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
+                   RLHighlightedForegroundColorAttributeName:UIColor.greenColor()])
+customLabel.setAttributedTruncationToken(token, action: action)
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/hsusmita/SHResponsiveLabel">SHResponsiveLabel</a> is maintained by <a href="https://github.com/hsusmita">hsusmita</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-65986615-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
