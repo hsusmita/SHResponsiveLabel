@@ -12,7 +12,7 @@ import Foundation
 Specifies the type of Pattern Search
 */
 public enum PatternSearchType:Int {
-	case PatternSearchTypeAll,PatternSearchTypeFirst,PatternSearchTypeLast
+	case All,First,Last
 }
 
 /**
@@ -42,13 +42,13 @@ public struct PatternDescriptor {
 	public func patternRangesForString(string:String) -> [NSRange] {
 		switch(self.searchType) {
 
-		case .PatternSearchTypeAll:
+		case .All:
 			return allMatchingPattern(string)
 			
-		case .PatternSearchTypeFirst:
+		case .First:
 			return [firstMatchingPattern(string)]
 			
-		case .PatternSearchTypeLast:
+		case .Last:
 			return [allMatchingPattern(string)].last!
 		}
 	}

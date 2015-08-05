@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="#Label @username more text#Label @username more text#Label @username more text#Label @username more text" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Fgi-WB-U2L" customClass="SHResponsiveLabel" customModule="SHResponsiveLabel" customModuleProvider="target">
-                                <rect key="frame" x="203" y="240" width="195" height="122"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Label @username more text#Label @username more text#Label @username more text#Label @username more text hsusmita4@gmail.com" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Fgi-WB-U2L" customClass="SHResponsiveLabel" customModule="SHResponsiveLabel" customModuleProvider="target">
+                                <rect key="frame" x="203" y="249" width="195" height="102"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="diH-Gp-BIZ"/>

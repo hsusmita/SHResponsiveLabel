@@ -375,7 +375,7 @@ public class SHResponsiveLabel:UILabel {
   func enableHashTagDetection(dictionary:[String:AnyObject]) {
     var error:NSError?
     let regex = NSRegularExpression(pattern:kRegexStringForHashTag, options: NSRegularExpressionOptions.allZeros, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.PatternSearchTypeAll, patternAttributes: dictionary)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
     enablePatternDetection(descriptor)
   }
   
@@ -386,7 +386,7 @@ public class SHResponsiveLabel:UILabel {
   func enableUserHandleDetection(dictionary:[String:AnyObject]) {
     var error:NSError?
     let regex = NSRegularExpression(pattern:kRegexStringForUserHandle, options: NSRegularExpressionOptions.allZeros, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.PatternSearchTypeAll, patternAttributes: dictionary)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
     enablePatternDetection(descriptor)
   }
 
@@ -397,7 +397,7 @@ public class SHResponsiveLabel:UILabel {
   func enableURLDetection(dictionary:[String:AnyObject]) {
     var error:NSError?
     let regex = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.PatternSearchTypeAll, patternAttributes: dictionary)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
     enablePatternDetection(descriptor)
   }
   
@@ -418,11 +418,11 @@ public class SHResponsiveLabel:UILabel {
     removePatternAttributes(patternDescriptor)
   }
   
-  func enableStringDetection(string:String,dictionary:[String:NSObject]) {
+  func enableStringDetection(string:String,dictionary:[String:AnyObject]) {
     var error:NSError?
-    let pattern = kRegexFormatForSearchWord + string
+    let pattern = String(format: kRegexFormatForSearchWord,string)
     let regex = NSRegularExpression(pattern:pattern, options: NSRegularExpressionOptions.allZeros, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.PatternSearchTypeAll, patternAttributes: dictionary)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
     enablePatternDetection(descriptor)
   }
 
@@ -431,7 +431,7 @@ public class SHResponsiveLabel:UILabel {
     disablePatternDetection(patternDescriptorDictionary[key]!)
   }
   
-  func enableDetectionForStrings(stringsArray:[String],dictionary:[String:NSObject]) {
+  func enableDetectionForStrings(stringsArray:[String],dictionary:[String:AnyObject]) {
     for string in stringsArray {
       enableStringDetection(string, dictionary: dictionary)
     }

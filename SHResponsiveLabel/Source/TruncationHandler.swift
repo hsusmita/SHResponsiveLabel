@@ -40,10 +40,10 @@ extension SHResponsiveLabel {
     let regex = NSRegularExpression(pattern: patternKey, options: NSRegularExpressionOptions.allZeros, error: error)
     if let currentRegex = regex as NSRegularExpression? {
       if let tokenAction = action as PatternTapResponder? {
-        let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.PatternSearchTypeLast, patternAttributes:[RLTapResponderAttributeName:action])
+        let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.Last, patternAttributes:[RLTapResponderAttributeName:action])
         enablePatternDetection(descriptor)
       }else {
-        let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.PatternSearchTypeLast,patternAttributes:nil)
+        let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.Last,patternAttributes:nil)
         enablePatternDetection(descriptor)
       }
     }
