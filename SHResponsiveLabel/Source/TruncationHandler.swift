@@ -53,7 +53,7 @@ extension SHResponsiveLabel {
   func shouldAppendTruncationToken()-> Bool {
     var shouldAppend = false
     if let currentText = textStorage as NSAttributedString? {
-      if let token = attributedTruncationToken as NSAttributedString? {
+      if attributedTruncationToken?.length > 0 {
         shouldAppend = customTruncationEnabled && numberOfLines != 0
       }
     }
@@ -61,7 +61,6 @@ extension SHResponsiveLabel {
   }
   
   func appendTokenIfNeeded() {
-    println("container size = \(textContainer.size)")
     if (shouldAppendTruncationToken() && !truncationTokenAppended()) {
       if isNewLinePresent() {
         //Append token string at the end of last visible line
@@ -136,8 +135,7 @@ extension SHResponsiveLabel {
     }
     return range
   }
-  
-  
+
 //  This method removes attributes from the truncated range.
 //  TruncatedRange is defined as the pattern range which overlaps the range of
 //  truncation token. When the truncation token is set, the attributes of the
@@ -150,12 +148,14 @@ extension SHResponsiveLabel {
       for range in ranges {
         let truncationRange = rangeOfTruncationToken()
         let isTruncationRange = NSEqualRanges(range, truncationRange)
-        let doesIntersectTruncationRange = NSIntersectionRange(range, truncationRange).length > 0
+        let intersectionRange = NSIntersectionRange(range, truncationRange)
+        let isRangeTruncated =  (intersectionRange.length > 0) && (range.location < truncationRange.location)
         //Remove attributes if the range is truncated
-        if (doesIntersectTruncationRange && !isTruncationRange) {
+        if (isRangeTruncated) {
+          let visibleRange = NSMakeRange(range.location,range.length - intersectionRange.length);
           if let attributes = descriptor.patternAttributes {
             for (name,NSObject) in attributes {
-              textStorage.removeAttribute(name, range: range)
+              textStorage.removeAttribute(name, range: visibleRange)
             }
             redrawTextForRange(range)
           }
