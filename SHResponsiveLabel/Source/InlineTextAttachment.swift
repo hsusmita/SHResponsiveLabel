@@ -2,7 +2,7 @@
 //  InlineTextAttachment.swift
 //  SHResponsiveLabel
 //
-//  Created by sah-fueled on 10/08/15.
+//  Created by hsusmita on 10/08/15.
 //  Copyright (c) 2015 hsusmita.com. All rights reserved.
 //
 
@@ -14,7 +14,9 @@ class InlineTextAttachment: NSTextAttachment {
   
  override  func  attachmentBoundsForTextContainer(textContainer: NSTextContainer, proposedLineFragment lineFrag: CGRect, glyphPosition position: CGPoint, characterIndex charIndex: Int) -> CGRect {
   var superRect = super.attachmentBoundsForTextContainer(textContainer, proposedLineFragment: lineFrag, glyphPosition: position, characterIndex: charIndex)
-  superRect.origin.y = self.fontDescender!
+  if let descender = self.fontDescender {
+    superRect.origin.y = descender
+  }
   return superRect
   }
    

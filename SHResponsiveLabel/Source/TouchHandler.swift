@@ -14,7 +14,6 @@ extension SHResponsiveLabel {
   public override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
     let touchLocation = (touches.first as! UITouch).locationInView(self)
     let index = characterIndexAtLocation(touchLocation)
-    
     var rangeOfTappedText = NSMakeRange(NSNotFound, 0)
     if let currentString = textStorage as NSAttributedString? {
       if index < currentString.length {
@@ -89,7 +88,7 @@ extension SHResponsiveLabel {
       if let foregroundcolor = textStorage.attribute(RLHighlightedForegroundColorAttributeName,atIndex:index,effectiveRange:&patternRange) as? UIColor {
         textStorage.addAttribute(NSForegroundColorAttributeName, value: foregroundcolor, range: patternRange)
       }
-      setNeedsDisplay()
+      self.redrawTextForRange(patternRange)
     }
   }
   
@@ -106,7 +105,7 @@ extension SHResponsiveLabel {
         if let foregroundcolor = currentAttributedString!.attribute(NSForegroundColorAttributeName,atIndex:index,effectiveRange:&patternRange) as? UIColor {
           textStorage.addAttribute(NSForegroundColorAttributeName, value: foregroundcolor, range: patternRange)
         }
-        setNeedsDisplay()
+        self.redrawTextForRange(patternRange)
       }
     }
     
@@ -132,31 +131,13 @@ extension SHResponsiveLabel {
     return chracterIndex
   }
   
-  func stringIndexAtLocation(location:CGPoint)-> (Int) {
-    var stringIndex = NSNotFound
-    if (count(self.textStorage.string) > 0) {
-      let glyphIndex = glyphIndexForLocation(location)
-      var lineRangePointer = NSRangePointer()
-      var lineRect = self.layoutManager.lineFragmentUsedRectForGlyphAtIndex(glyphIndex, effectiveRange: lineRangePointer)
-      lineRect.size.height = 60;  //Adjustment to increase tap area
-      if (CGRectContainsPoint(lineRect, location)) {
-        stringIndex = self.layoutManager.characterIndexForGlyphAtIndex(glyphIndex)
-      }
-    }
-    return stringIndex
-  }
-  
   func glyphIndexForLocation(location:CGPoint)-> (Int) {
     let glyphRange = self.layoutManager.glyphRangeForTextContainer(self.textContainer)
-    let textOffset = self.calcTextOffsetForGlyphRange(glyphRange)
-    
+    let textOffset = self.textOffsetForGlyphRange(glyphRange)
     // Get the touch location and use text offset to convert to text cotainer coords
     let finalLocation = CGPointMake(location.x - textOffset.x, location.y - textOffset.y)
-    return self.layoutManager.glyphIndexForPoint(location, inTextContainer: self.textContainer)
+    return self.layoutManager.glyphIndexForPoint(finalLocation, inTextContainer: self.textContainer)
   }
-  
-  // MARK: Touch Handlers
-  
   
   func performActionAtIndex(index:NSInteger) {
     var patternRange = NSMakeRange(NSNotFound, 0)

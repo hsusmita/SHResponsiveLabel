@@ -56,7 +56,8 @@ class ViewController: UIViewController {
       println("Hashtag Tapped = "+tappedString)
       }
     self.customLabel.enableHashTagDetection([NSForegroundColorAttributeName:UIColor.redColor(),
-      RLTapResponderAttributeName:hashtagTapAction])
+                                  RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
+                                                RLTapResponderAttributeName:hashtagTapAction])
     
     let userhandleTapAction = PatternTapResponder { (tappedString) -> (Void) in
       println("Username Handle Tapped = " + tappedString)
@@ -64,7 +65,7 @@ class ViewController: UIViewController {
     self.customLabel.enableUserHandleDetection([NSForegroundColorAttributeName:UIColor.grayColor(),
                                      RLHighlightedForegroundColorAttributeName:UIColor.greenColor(),
                                      RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
-                                                     RLTapResponderAttributeName:userhandleTapAction])
+                                                   RLTapResponderAttributeName:userhandleTapAction])
     
     let urlTapAction  = PatternTapResponder { (tappedString) -> (Void) in
       println("URL Tapped = " + tappedString)

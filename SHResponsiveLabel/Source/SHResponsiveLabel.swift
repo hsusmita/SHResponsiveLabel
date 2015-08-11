@@ -98,13 +98,12 @@ public class SHResponsiveLabel:UILabel {
   func initialTextConfiguration() {
     var currentText : NSAttributedString?
     if (attributedText.length > 0) {
-        currentText = attributedText
+      currentText = self.attributedText.wordWrappedAttributedString()
     }else {
       currentText = NSAttributedString(string: text!, attributes: attributesFromProperties())
     }
     if (currentText != nil) {
       updateTextStorage(currentText)
-//      textContainer.size = rectFittingText(bounds.size, numberOfLines: numberOfLines).size
       appendTokenIfNeeded()
     }
   }
@@ -132,6 +131,7 @@ public class SHResponsiveLabel:UILabel {
     customTruncationEnabled = false
 
 		super.init(frame: frame)
+    
 		setup()
 		configureGestures()
 	}
@@ -174,11 +174,13 @@ public class SHResponsiveLabel:UILabel {
   
   func redrawTextForRange(range:NSRange) {
     var glyphRange = NSMakeRange(NSNotFound, 0)
-    layoutManager.characterRangeForGlyphRange(range, actualGlyphRange: &glyphRange);
+    layoutManager.characterRangeForGlyphRange(range, actualGlyphRange: &glyphRange)
+    
     var rect = layoutManager.boundingRectForGlyphRange(glyphRange, inTextContainer: textContainer)
     let totalGlyphRange = layoutManager.glyphRangeForTextContainer(textContainer)
     let point = textOffsetForGlyphRange(totalGlyphRange)
     rect.origin.y += point.y
+    
     setNeedsDisplayInRect(rect)
   }
   
@@ -199,7 +201,6 @@ public class SHResponsiveLabel:UILabel {
     if (paddingHeight > 0){
       textOffset.y = paddingHeight
     }
-    
     return textOffset
   }
   
@@ -234,16 +235,6 @@ public class SHResponsiveLabel:UILabel {
     textBounds.size.height = ceil(textBounds.size.height);
     return textBounds
   }
-
-	func calcTextOffsetForGlyphRange(glyphRange:NSRange)-> (CGPoint) {
-		var textOffset = CGPointZero
-		let textBounds = self.layoutManager.boundingRectForGlyphRange(glyphRange, inTextContainer: self.textContainer)
-		let paddingHeight = (self.bounds.size.height - textBounds.size.height) / 2.0
-		if (paddingHeight > 0) {
-			textOffset.y = paddingHeight
-		}
-		return textOffset
-	}
 	
   //MARK: Helpers
   
@@ -324,8 +315,6 @@ public class SHResponsiveLabel:UILabel {
 //    In patternDescriptorDictionary, each entry has the format (NSString, PatternDescriptor).
 //    @param: PatternDescriptor
 //    @return: NSString
-
-  
   func patternNameKeyForPatternDescriptor(patternDescriptor:PatternDescriptor)-> String {
     let key:String
     if patternDescriptor.patternExpression.isKindOfClass(NSDataDetector) {
@@ -440,6 +429,26 @@ public class SHResponsiveLabel:UILabel {
     for string in stringsArray {
       disableStringDetection(string)
     }
+  }
+}
+
+extension NSAttributedString {
+  func wordWrappedAttributedString()-> NSAttributedString {
+    var processedString = self
+    if self.length > 0 {
+      var range = NSRangePointer()
+      if let paragraphStyle = attribute(NSParagraphStyleAttributeName, atIndex: 0, effectiveRange: range) as? NSParagraphStyle {
+        
+        // Remove the line breaks
+        var mutableParagraphStyle: NSMutableParagraphStyle = (paragraphStyle.mutableCopy() as? NSMutableParagraphStyle)!
+        mutableParagraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        // Apply new style
+        var restyled = NSMutableAttributedString(attributedString: self)
+        restyled.addAttribute(NSParagraphStyleAttributeName, value: mutableParagraphStyle, range: NSMakeRange(0, restyled.length))
+        processedString = restyled
+      }
+    }
+    return processedString
   }
 }
 
