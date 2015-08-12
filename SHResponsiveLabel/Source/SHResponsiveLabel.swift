@@ -76,12 +76,16 @@ public class SHResponsiveLabel:UILabel {
 		}
 	}
 
-	override public var numberOfLines: Int {
-		didSet {
-      initialTextConfiguration()
-		}
-	}
-	
+  override public var numberOfLines: Int {
+    didSet {
+      if (numberOfLines != textContainer.maximumNumberOfLines) {
+        textContainer.maximumNumberOfLines = numberOfLines
+        layoutIfNeeded()
+        initialTextConfiguration()
+      }
+    }
+  }
+  
 	override public var text: String! {
 		didSet {
       let currentText = NSAttributedString(string: text!, attributes: attributesFromProperties())
@@ -164,9 +168,9 @@ public class SHResponsiveLabel:UILabel {
   func updateTextStorage(attributedText:NSAttributedString?) {
     if (attributedText!.length > 0) {
       textStorage.setAttributedString(attributedText!)
+//      textContainer.size = rectFittingText(bounds.size, lineCount: numberOfLines).size
       redrawTextForRange(NSMakeRange(0, attributedText!.length))
     }
-  textContainer.size = rectFittingText(bounds.size, numberOfLines: numberOfLines).size
     for (key,descriptor) in patternDescriptorDictionary {
       self.addPatternAttributes(descriptor)
     }
@@ -211,33 +215,31 @@ public class SHResponsiveLabel:UILabel {
   //MARK: Override methods
   
   public override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
-    let requiredRect = rectFittingText(bounds.size, numberOfLines: numberOfLines)
+    let requiredRect = rectFittingText(bounds.size, lineCount: numberOfLines)
     textContainer.size = requiredRect.size
-    return requiredRect;
+    return requiredRect
   }
   
-  func rectFittingText(size:CGSize, numberOfLines:Int)-> CGRect {
+  func rectFittingText(size:CGSize, lineCount:Int)-> CGRect {
     textContainer.size = size
-    if (numberOfLines == 0) {
-      self.textContainer.maximumNumberOfLines = Int.max
-    }else {
-      self.textContainer.maximumNumberOfLines = numberOfLines
-    }
+    self.textContainer.maximumNumberOfLines = lineCount
+    
     let glyphRange = layoutManager.glyphRangeForTextContainer(textContainer);
     var textBounds = layoutManager.boundingRectForGlyphRange(glyphRange, inTextContainer: textContainer)
     let totalLines = Int(textBounds.size.height / self.font.lineHeight);
-    if (numberOfLines > 0 && (numberOfLines < totalLines)) {
-      textBounds.size.height -= CGFloat(totalLines - numberOfLines) * self.font.lineHeight
-    }else if (numberOfLines > 0 && (numberOfLines > totalLines)) {
-      textBounds.size.height += CGFloat(numberOfLines - totalLines) * self.font.lineHeight
+    
+    if (lineCount > 0 && (lineCount < totalLines)) {
+      textBounds.size.height -= CGFloat(totalLines - lineCount) * self.font.lineHeight
+    }else if (lineCount > 0 && (lineCount > totalLines)) {
+      textBounds.size.height += CGFloat(lineCount - totalLines) * self.font.lineHeight
     }
     textBounds.size.width = ceil(textBounds.size.width);
     textBounds.size.height = ceil(textBounds.size.height);
+
     return textBounds
   }
 	
   //MARK: Helpers
-  
   
 	func attributesFromProperties()-> [String:AnyObject] {
 		// Setup shadow attributes
@@ -342,7 +344,7 @@ public class SHResponsiveLabel:UILabel {
   func setAttributedTruncationToken(attributedTruncationToken:NSAttributedString, action:PatternTapResponder) {
     removeTokenIfPresent()
     updateTruncationToken(attributedTruncationToken, action: action)
-    if(customTruncationEnabled) {
+    if customTruncationEnabled {
       appendTokenIfNeeded()
     }
   }
