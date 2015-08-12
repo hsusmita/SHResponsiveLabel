@@ -52,9 +52,11 @@ extension SHResponsiveLabel {
   
   func shouldAppendTruncationToken()-> Bool {
     var shouldAppend = false
-    if let currentText = textStorage as NSAttributedString? {
+    if textStorage.length > 0 {
       if attributedTruncationToken?.length > 0 {
-        shouldAppend = customTruncationEnabled && numberOfLines != 0
+//        shouldAppend = customTruncationEnabled && numberOfLines != 0
+        shouldAppend = customTruncationEnabled
+
       }
     }
     return shouldAppend
@@ -64,16 +66,20 @@ extension SHResponsiveLabel {
     if (shouldAppendTruncationToken() && !truncationTokenAppended()) {
       if isNewLinePresent() {
         //Append token string at the end of last visible line
-        textStorage.replaceCharactersInRange(rangeForTokenInsertionForStringWithNewLine(), withAttributedString: attributedTruncationToken!)
+        let range = rangeForTokenInsertionForStringWithNewLine()
+        if range.length > 0 {
+          textStorage.replaceCharactersInRange(range, withAttributedString: attributedTruncationToken!)
+        }
       }
-    //Check for truncation range and append truncation token if required
-    let tokenRange = rangeForTokenInsertion()
-
-      if (tokenRange.location != NSNotFound) {
+      //Check for truncation range and append truncation token if required
+      let tokenRange = rangeForTokenInsertion()
+      
+      if (tokenRange.length > 0 && tokenRange.location >= 0) {
         self.textStorage.replaceCharactersInRange(tokenRange, withAttributedString:attributedTruncationToken!)
         self.redrawTextForRange(NSMakeRange(0, textStorage.length))
       }
-//      //Apply attributes if truncation token appended
+    
+      //Apply attributes if truncation token appended
       let truncationRange = rangeOfTruncationToken()
       if (truncationRange.location != NSNotFound) {
         removeAttributeForTruncatedRange()
@@ -83,8 +89,9 @@ extension SHResponsiveLabel {
           if let attributes = descriptor.patternAttributes {
             textStorage.addAttributes(descriptor.patternAttributes!, range: truncationRange)
           }
-        }        
+        }
       }
+    
     }
 
   }
@@ -99,13 +106,12 @@ extension SHResponsiveLabel {
   func rangeForTokenInsertionForStringWithNewLine()-> NSRange {
     let numberOfGlyphs = layoutManager.numberOfGlyphs
     var index = 0
-    let lineRange = NSMakeRange(NSNotFound, 0);
+    var lineRange = NSMakeRange(NSNotFound, 0);
     let approximateNumberOfLines = Int(layoutManager.usedRectForTextContainer(textContainer).height) / Int(font.lineHeight)
 
-    for (numberOfLines = 0, index = 0; index < numberOfGlyphs; numberOfLines++) {
-      var lineRange = NSMakeRange(NSNotFound,0)
+    for (var lineNumber = 0, index = 0; index < numberOfGlyphs; lineNumber++) {
       layoutManager.lineFragmentRectForGlyphAtIndex(index, effectiveRange: &lineRange)
-      if (numberOfLines == approximateNumberOfLines - 1){ break}
+      if (lineNumber == approximateNumberOfLines - 1){ break}
       index = NSMaxRange(lineRange);
     }
     
@@ -114,9 +120,10 @@ extension SHResponsiveLabel {
   }
   
   func rangeOfTruncationToken()-> NSRange {
-    if (numberOfLines == 0) {
-      return NSMakeRange(NSNotFound, 0)
-    }
+    println("number of line = \(numberOfLines)")
+//    if (numberOfLines == 0) {
+//      return NSMakeRange(NSNotFound, 0)
+//    }
     if (attributedTruncationToken?.length > 0 && customTruncationEnabled == true) {
       var currentString:NSString = textStorage.string as NSString
       return currentString.rangeOfString(attributedTruncationToken!.string)
@@ -126,10 +133,16 @@ extension SHResponsiveLabel {
   }
   
   func rangeForTokenInsertion()-> NSRange {
-    //    textContainer.size = self.bounds.size
+    textContainer.size = self.bounds.size
+    println("size = \(textContainer.size.width) x \(textContainer.size.height)")
+    println("label size = \(self.frame.size.width) x \(self.frame.size.height)")
+    println("length \(textStorage.length)")
     let glyphIndex = layoutManager.glyphIndexForCharacterAtIndex(textStorage.length-1)
+    println("glyph index = \(glyphIndex)")
+
     var range = layoutManager.truncatedGlyphRangeInLineFragmentForGlyphAtIndex(glyphIndex)
-    if (range.location != NSNotFound && customTruncationEnabled) {
+    println("range = \(range.location) x \(range.length)")
+    if (range.length > 0 && customTruncationEnabled) {
       range.length += attributedTruncationToken!.length
       range.location -= attributedTruncationToken!.length
     }
