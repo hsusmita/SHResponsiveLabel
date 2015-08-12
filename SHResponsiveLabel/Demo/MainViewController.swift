@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
   @IBOutlet weak var customLabel: SHResponsiveLabel!
   @IBOutlet weak var messageLabel: UILabel!
@@ -24,12 +24,12 @@ class ViewController: UIViewController {
 //    customLabel.enablePatternDetection(descriptor)
 //    
     //Detect the word "text" and "some"
-    let tapResponder = PatternTapResponder { (tappedString) -> (Void) in
-      println("tapped = "+tappedString)
-    }
-    self.customLabel.enableDetectionForStrings(["text","some"], dictionary: [NSForegroundColorAttributeName:UIColor.brownColor(),
-      RLTapResponderAttributeName:tapResponder])
-
+//    let tapResponder = PatternTapResponder { (tappedString) -> (Void) in
+//      println("tapped = "+tappedString)
+//    }
+//    self.customLabel.enableDetectionForStrings(["text","some"], dictionary: [NSForegroundColorAttributeName:UIColor.brownColor(),
+//      RLTapResponderAttributeName:tapResponder])
+//
   }
 
   override func didReceiveMemoryWarning() {
@@ -92,11 +92,11 @@ class ViewController: UIViewController {
           NSForegroundColorAttributeName:UIColor.brownColor(),
           RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
           RLHighlightedForegroundColorAttributeName:UIColor.greenColor()])
-    let action = PatternTapResponder {(tappedString)-> (Void) in
-      let messageString = "You have tapped token string"
-      self.messageLabel.text = messageString}
-    customLabel.setAttributedTruncationToken(token, action: action)
-
+      let action = PatternTapResponder {(tappedString)-> (Void) in
+        let messageString = "You have tapped token string"
+        self.messageLabel.text = messageString}
+      customLabel.setAttributedTruncationToken(token, action: action)
+      
     case 1:
       let action = PatternTapResponder {(tappedString)-> (Void) in
         let messageString = "You have tapped token string"

@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		692498441B7A0AB70002B617 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692498411B7A0AB70002B617 /* AppDelegate.swift */; };
+		692498451B7A0AB70002B617 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692498421B7A0AB70002B617 /* MainViewController.swift */; };
+		692498461B7A0AB70002B617 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692498431B7A0AB70002B617 /* TableViewController.swift */; };
+		692498481B7A0FCD0002B617 /* ExpandableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692498471B7A0FCD0002B617 /* ExpandableCell.swift */; };
 		6929B3561B78C7740098A690 /* InlineTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6929B3551B78C7740098A690 /* InlineTextAttachment.swift */; };
 		693AD01D1B6B531F00A538B2 /* TouchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693AD01C1B6B531F00A538B2 /* TouchHandler.swift */; };
 		693AD01F1B6B56A100A538B2 /* TruncationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693AD01E1B6B56A100A538B2 /* TruncationHandler.swift */; };
-		69C7CF7A1B66390C002C9CA3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C7CF791B66390C002C9CA3 /* AppDelegate.swift */; };
-		69C7CF7C1B66390C002C9CA3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C7CF7B1B66390C002C9CA3 /* ViewController.swift */; };
 		69C7CF7F1B66390C002C9CA3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69C7CF7D1B66390C002C9CA3 /* Main.storyboard */; };
 		69C7CF811B66390C002C9CA3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69C7CF801B66390C002C9CA3 /* Images.xcassets */; };
 		69C7CF841B66390C002C9CA3 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69C7CF821B66390C002C9CA3 /* LaunchScreen.xib */; };
@@ -31,13 +33,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		692498411B7A0AB70002B617 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		692498421B7A0AB70002B617 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		692498431B7A0AB70002B617 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		692498471B7A0FCD0002B617 /* ExpandableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableCell.swift; sourceTree = "<group>"; };
 		6929B3551B78C7740098A690 /* InlineTextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineTextAttachment.swift; sourceTree = "<group>"; };
 		693AD01C1B6B531F00A538B2 /* TouchHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchHandler.swift; sourceTree = "<group>"; };
 		693AD01E1B6B56A100A538B2 /* TruncationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TruncationHandler.swift; sourceTree = "<group>"; };
 		69C7CF741B66390C002C9CA3 /* SHResponsiveLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SHResponsiveLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69C7CF781B66390C002C9CA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		69C7CF791B66390C002C9CA3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		69C7CF7B1B66390C002C9CA3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		69C7CF7E1B66390C002C9CA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		69C7CF801B66390C002C9CA3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		69C7CF831B66390C002C9CA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -66,6 +70,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		692498401B7A0AB70002B617 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				692498411B7A0AB70002B617 /* AppDelegate.swift */,
+				692498421B7A0AB70002B617 /* MainViewController.swift */,
+				692498431B7A0AB70002B617 /* TableViewController.swift */,
+				692498471B7A0FCD0002B617 /* ExpandableCell.swift */,
+			);
+			name = Demo;
+			path = Source/Demo;
+			sourceTree = "<group>";
+		};
 		69C7CF6B1B66390C002C9CA3 = {
 			isa = PBXGroup;
 			children = (
@@ -88,10 +104,9 @@
 			isa = PBXGroup;
 			children = (
 				69C7CF9D1B66457B002C9CA3 /* Source */,
-				69C7CF791B66390C002C9CA3 /* AppDelegate.swift */,
-				69C7CF7B1B66390C002C9CA3 /* ViewController.swift */,
-				69C7CF7D1B66390C002C9CA3 /* Main.storyboard */,
+				692498401B7A0AB70002B617 /* Demo */,
 				69C7CF801B66390C002C9CA3 /* Images.xcassets */,
+				69C7CF7D1B66390C002C9CA3 /* Main.storyboard */,
 				69C7CF821B66390C002C9CA3 /* LaunchScreen.xib */,
 				69C7CF771B66390C002C9CA3 /* Supporting Files */,
 			);
@@ -236,9 +251,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				692498451B7A0AB70002B617 /* MainViewController.swift in Sources */,
+				692498481B7A0FCD0002B617 /* ExpandableCell.swift in Sources */,
+				692498441B7A0AB70002B617 /* AppDelegate.swift in Sources */,
 				6929B3561B78C7740098A690 /* InlineTextAttachment.swift in Sources */,
-				69C7CF7C1B66390C002C9CA3 /* ViewController.swift in Sources */,
-				69C7CF7A1B66390C002C9CA3 /* AppDelegate.swift in Sources */,
+				692498461B7A0AB70002B617 /* TableViewController.swift in Sources */,
 				693AD01D1B6B531F00A538B2 /* TouchHandler.swift in Sources */,
 				693AD01F1B6B56A100A538B2 /* TruncationHandler.swift in Sources */,
 				69C7CFA01B66457B002C9CA3 /* PatternDescriptor.swift in Sources */,
