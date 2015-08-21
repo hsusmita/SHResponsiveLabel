@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E2E056A1B860CC70085ADD3 /* TextkitStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E05691B860CC70085ADD3 /* TextkitStack.swift */; };
+		4E2E056B1B860CC70085ADD3 /* TextkitStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E05691B860CC70085ADD3 /* TextkitStack.swift */; };
+		4E2E056D1B860FA20085ADD3 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E056C1B860FA20085ADD3 /* CustomLabel.swift */; };
+		4E2E056E1B860FA20085ADD3 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2E056C1B860FA20085ADD3 /* CustomLabel.swift */; };
 		692498441B7A0AB70002B617 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692498411B7A0AB70002B617 /* AppDelegate.swift */; };
 		692498451B7A0AB70002B617 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692498421B7A0AB70002B617 /* MainViewController.swift */; };
 		692498461B7A0AB70002B617 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692498431B7A0AB70002B617 /* TableViewController.swift */; };
@@ -33,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E2E05691B860CC70085ADD3 /* TextkitStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextkitStack.swift; sourceTree = "<group>"; };
+		4E2E056C1B860FA20085ADD3 /* CustomLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		692498411B7A0AB70002B617 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		692498421B7A0AB70002B617 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		692498431B7A0AB70002B617 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -146,6 +152,8 @@
 				693AD01E1B6B56A100A538B2 /* TruncationHandler.swift */,
 				693AD01C1B6B531F00A538B2 /* TouchHandler.swift */,
 				6929B3551B78C7740098A690 /* InlineTextAttachment.swift */,
+				4E2E05691B860CC70085ADD3 /* TextkitStack.swift */,
+				4E2E056C1B860FA20085ADD3 /* CustomLabel.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -253,12 +261,14 @@
 			files = (
 				692498451B7A0AB70002B617 /* MainViewController.swift in Sources */,
 				692498481B7A0FCD0002B617 /* ExpandableCell.swift in Sources */,
+				4E2E056D1B860FA20085ADD3 /* CustomLabel.swift in Sources */,
 				692498441B7A0AB70002B617 /* AppDelegate.swift in Sources */,
 				6929B3561B78C7740098A690 /* InlineTextAttachment.swift in Sources */,
 				692498461B7A0AB70002B617 /* TableViewController.swift in Sources */,
 				693AD01D1B6B531F00A538B2 /* TouchHandler.swift in Sources */,
 				693AD01F1B6B56A100A538B2 /* TruncationHandler.swift in Sources */,
 				69C7CFA01B66457B002C9CA3 /* PatternDescriptor.swift in Sources */,
+				4E2E056A1B860CC70085ADD3 /* TextkitStack.swift in Sources */,
 				69C7CFA11B66457B002C9CA3 /* SHResponsiveLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,6 +277,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E2E056B1B860CC70085ADD3 /* TextkitStack.swift in Sources */,
+				4E2E056E1B860FA20085ADD3 /* CustomLabel.swift in Sources */,
 				69C7CF901B66390C002C9CA3 /* SHResponsiveLabelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +401,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SHResponsiveLabel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -399,6 +412,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SHResponsiveLabel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -10,12 +10,14 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+	@IBOutlet weak var label: CustomLabel!
   @IBOutlet weak var customLabel: SHResponsiveLabel!
   @IBOutlet weak var messageLabel: UILabel!
   @IBOutlet weak var segmentControl: UISegmentedControl!
   override func viewDidLoad() {
     super.viewDidLoad()
-    customLabel.text = "Hello #hashtag @username some more text www.google.com some more text some more textsome more text hsusmita4@gmail.com";
+//    customLabel.text = "Hello #hashtag @username some more text www.google.com some more text some more textsome more text hsusmita4@gmail.com"
+//	label.text = "Hello #hashtag @username some more text www.google.com some more text some more textsome more text hsusmita4@gmail.com"
 //    //Detects email in text
 //    let emailRegexString = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 //    var error = NSErrorPointer()

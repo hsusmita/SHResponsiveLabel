@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Fgd-UN-Lry">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Fgd-UN-Lry">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFh-Vn-sLz">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFh-Vn-sLz">
                                 <rect key="frame" x="229" y="168" width="143" height="30"/>
                                 <state key="normal" title="TableViewCell Usage">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -26,14 +26,24 @@
                                     <segue destination="qz3-A4-TQ5" kind="show" id="oC4-cY-eiD"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2Z-Dn-p2o" userLabel="MessageLabel">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Label @username more text #Label @username more text #Label @username more text #Label @username more text hsusmita4@gmail.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="gtW-go-gcU" customClass="CustomLabel" customModule="SHResponsiveLabel" customModuleProvider="target">
+                                <rect key="frame" x="201" y="130" width="199" height="41"/>
+                                <color key="backgroundColor" red="0.63435024230000003" green="0.56999020190000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="199" id="Wm0-YX-UNZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2Z-Dn-p2o" userLabel="MessageLabel">
                                 <rect key="frame" x="265" y="218" width="70" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Label @username more text #Label @username more text #Label @username more text #Label @username more text hsusmita4@gmail.com" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Fgi-WB-U2L" customClass="SHResponsiveLabel" customModule="SHResponsiveLabel" customModuleProvider="target">
-                                <rect key="frame" x="201" y="249" width="199" height="102"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Label @username more text #Label @username more text #Label @username more text #Label @username more text hsusmita4@gmail.com" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="Fgi-WB-U2L" customClass="SHResponsiveLabel" customModule="SHResponsiveLabel" customModuleProvider="target">
+                                <rect key="frame" x="201" y="280" width="199" height="41"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="199" id="Ca7-OY-BLr"/>
@@ -52,7 +62,7 @@
                                     </mask>
                                 </variation>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q1f-zI-2v1">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q1f-zI-2v1">
                                 <rect key="frame" x="16" y="371" width="568" height="229"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijo-dX-Cd7">
@@ -298,8 +308,10 @@
                             <constraint firstItem="q1f-zI-2v1" firstAttribute="top" secondItem="Fgi-WB-U2L" secondAttribute="bottom" constant="20" id="Lgz-gH-O6P"/>
                             <constraint firstItem="q1f-zI-2v1" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="MiS-bk-iPa"/>
                             <constraint firstAttribute="centerX" secondItem="q1f-zI-2v1" secondAttribute="centerX" id="PxB-IU-OwH"/>
+                            <constraint firstAttribute="centerY" secondItem="gtW-go-gcU" secondAttribute="centerY" constant="150" id="Xfk-tr-m29"/>
                             <constraint firstAttribute="centerY" secondItem="Fgi-WB-U2L" secondAttribute="centerY" id="fOs-3a-ZJB"/>
                             <constraint firstItem="R2Z-Dn-p2o" firstAttribute="top" secondItem="eFh-Vn-sLz" secondAttribute="bottom" constant="20" id="gA3-ch-9BE"/>
+                            <constraint firstAttribute="centerX" secondItem="gtW-go-gcU" secondAttribute="centerX" id="gsh-cV-hN6"/>
                             <constraint firstItem="q1f-zI-2v1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="mkA-Vh-ldt"/>
                             <constraint firstAttribute="centerX" secondItem="Fgi-WB-U2L" secondAttribute="centerX" id="ruX-tw-9qQ"/>
                             <constraint firstAttribute="bottom" secondItem="q1f-zI-2v1" secondAttribute="bottom" id="wBZ-Yc-mco"/>
@@ -313,7 +325,7 @@
                     <navigationItem key="navigationItem" id="lbl-Tc-upJ"/>
                     <connections>
                         <outlet property="customLabel" destination="Fgi-WB-U2L" id="bZB-Sv-wJv"/>
-                        <outlet property="messageLabel" destination="R2Z-Dn-p2o" id="Gor-t4-su0"/>
+                        <outlet property="label" destination="gtW-go-gcU" id="wxK-gA-IR1"/>
                         <outlet property="segmentControl" destination="oSH-pN-Sy3" id="5IW-Ev-FLv"/>
                     </connections>
                 </viewController>
