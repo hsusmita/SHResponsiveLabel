@@ -114,11 +114,11 @@ public class SHResponsiveLabel:UILabel {
   
 	// MARK: Initializers
 	func setup() {
-		textContainer.lineFragmentPadding = 0;
-		textContainer.maximumNumberOfLines = self.numberOfLines;
-		textContainer.lineBreakMode = self.lineBreakMode;
-		textContainer.widthTracksTextView = true;
-		textContainer.size = self.frame.size;
+		textContainer.lineFragmentPadding = 0
+		textContainer.maximumNumberOfLines = self.numberOfLines
+		textContainer.lineBreakMode = self.lineBreakMode
+		textContainer.widthTracksTextView = true
+		textContainer.size = self.frame.size
 		textContainer.layoutManager = layoutManager
 
 		self.layoutManager.addTextContainer(textContainer)
@@ -146,7 +146,7 @@ public class SHResponsiveLabel:UILabel {
 		textStorage = NSTextStorage()
 		attributedTruncationToken = NSAttributedString.new()
 		patternDescriptorDictionary =  Dictionary()
-    customTruncationEnabled = false
+		customTruncationEnabled = false
 		super.init(coder: aDecoder)
 		setup()
 		configureGestures()
@@ -205,6 +205,7 @@ public class SHResponsiveLabel:UILabel {
     if (paddingHeight > 0){
       textOffset.y = paddingHeight
     }
+	println("custom : label bounds = \(self.bounds.size.height), textbounds = \(textBounds.height)")
     return textOffset
   }
   
