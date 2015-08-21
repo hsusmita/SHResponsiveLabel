@@ -16,6 +16,7 @@ It specifies the action to be performed when a range of text with that attribute
 public let RLTapResponderAttributeName : String = "Tap Responder Name"
 public let RLHighlightedForegroundColorAttributeName: String = "HighlightedForegroundColor"
 public let RLHighlightedBackgroundColorAttributeName:String = "HighlightedBackgroundColor"
+let gefdfsture: UITouchGestureRecognizer = UITouchGestureRecognizer()
 
 //public typealias PatternTapResponder = (tappedString:String) -> (Void)
 public class PatternTapResponder {
