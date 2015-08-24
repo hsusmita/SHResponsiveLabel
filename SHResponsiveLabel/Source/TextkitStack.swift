@@ -197,4 +197,39 @@ internal class TextkitStack:NSObject {
     return self.textStorage.length > 0
   }
   
+  func isNewLinePresent()-> Bool {
+    let storageString = textStorage.string as NSString
+    let newLineRange = storageString.rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
+    return (newLineRange.location != NSNotFound);
+  }
+  
+  
+  func rangeForTokenInsertionForStringWithNewLine()-> NSRange {
+    let numberOfGlyphs = layoutManager.numberOfGlyphs
+    var index = 0
+    var lineRange = NSMakeRange(NSNotFound, 0);
+    let lineFragmentRect = layoutManager.lineFragmentRectForGlyphAtIndex(0, effectiveRange: &lineRange)
+    let approximateNumberOfLines = Int(layoutManager.usedRectForTextContainer(textContainer).height) / Int(lineFragmentRect.size.height)
+    
+    for (var lineNumber = 0, index = 0; index < numberOfGlyphs; lineNumber++) {
+      layoutManager.lineFragmentRectForGlyphAtIndex(index, effectiveRange: &lineRange)
+      if (lineNumber == approximateNumberOfLines - 1){ break}
+      index = NSMaxRange(lineRange);
+    }
+    
+    let rangeOfText =  NSMakeRange(lineRange.location + lineRange.length - 1, self.textStorage.length - lineRange.location - lineRange.length + 1)
+    return rangeOfText
+  }
+  
+  func rangeForTextInsertion(text:NSString)-> NSRange {
+//    textContainer.size = self.bounds.size
+    let glyphIndex = layoutManager.glyphIndexForCharacterAtIndex(textStorage.length-1)
+    
+    var range = layoutManager.truncatedGlyphRangeInLineFragmentForGlyphAtIndex(glyphIndex)
+    if (range.length > 0) {
+      range.length += text.length
+      range.location -= text.length
+    }
+    return range
+  }
 }

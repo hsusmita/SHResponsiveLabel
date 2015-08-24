@@ -114,6 +114,7 @@ class MainViewController: UIViewController {
         let messageString = "You have tapped token string"
         self.messageLabel.text = messageString}
       customLabel.setAttributedTruncationToken(token, action: action)
+      label.setAttributedTruncationToken(token, action: action)
       
     case 1:
       let action = PatternTapResponder {(tappedString)-> (Void) in
@@ -130,7 +131,8 @@ class MainViewController: UIViewController {
   @IBAction func enableTruncationUIButton(sender:UIButton) {
     println("current token = \(customLabel.attributedTruncationToken?.string)")
     sender.selected = !sender.selected;
-    customLabel.customTruncationEnabled = sender.selected;
+    customLabel.customTruncationEnabled = sender.selected
+    label.customTruncationEnabled = sender.selected
   }
 
 }
