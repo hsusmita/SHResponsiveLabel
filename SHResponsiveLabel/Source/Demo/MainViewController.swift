@@ -48,10 +48,15 @@ class MainViewController: UIViewController {
       }
       customLabel.enableHashTagDetection([NSForegroundColorAttributeName : UIColor.redColor(),
         RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
-        RLTapResponderAttributeName:hashTagTapAction]);
+        RLTapResponderAttributeName:hashTagTapAction])
+      
+      label.enableHashTagDetection([NSForegroundColorAttributeName : UIColor.redColor(),
+        RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
+        RLTapResponderAttributeName:hashTagTapAction])
       
     }else {
       customLabel.disableHashTagDetection()
+      label.disableHashTagDetection()
     }
   }
   
@@ -67,8 +72,15 @@ class MainViewController: UIViewController {
         RLHighlightedForegroundColorAttributeName:UIColor.greenColor(),
         RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
         RLTapResponderAttributeName:userHandleTapAction])
+      
+      self.label.enableUserHandleDetection([NSForegroundColorAttributeName:UIColor.grayColor(),
+        RLHighlightedForegroundColorAttributeName:UIColor.greenColor(),
+        RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
+        RLTapResponderAttributeName:userHandleTapAction])
     }else {
       customLabel.disableUserHandleDetection()
+      label.disableUserHandleDetection()
+
     }
   }
   
@@ -80,8 +92,12 @@ class MainViewController: UIViewController {
         self.messageLabel.text = messageString
       }
       self.customLabel.enableURLDetection([NSForegroundColorAttributeName:UIColor.blueColor(),RLTapResponderAttributeName:URLTapAction])
+      self.label.enableURLDetection([NSForegroundColorAttributeName:UIColor.blueColor(),RLTapResponderAttributeName:URLTapAction])
+
     }else{
       self.customLabel.disableURLDetection()
+      self.label.disableURLDetection()
+
     }
   }
   

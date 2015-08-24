@@ -12,10 +12,13 @@ import UIKit
 public class CustomLabel: UILabel {
   
   	let textkitStack:TextkitStack
+    var patternDescriptorDictionary: [String:PatternDescriptor]
+    var rangeAttributesDictionary:[NSValue:[String:AnyObject]]
 	
   	override init(frame: CGRect) {
   		textkitStack = TextkitStack()
-  
+      patternDescriptorDictionary =  Dictionary()
+      rangeAttributesDictionary = Dictionary()
   		super.init(frame: frame)
   
   //		setup()
@@ -27,6 +30,9 @@ public class CustomLabel: UILabel {
   	required public init(coder aDecoder: NSCoder) {
   
   		textkitStack = TextkitStack()
+      patternDescriptorDictionary =  Dictionary()
+      rangeAttributesDictionary = Dictionary()
+
   		super.init(coder: aDecoder)
   		textkitStack.textContainer.lineBreakMode = self.lineBreakMode;
       userInteractionEnabled = true
@@ -111,6 +117,139 @@ public class CustomLabel: UILabel {
   public override class func requiresConstraintBasedLayout()-> Bool {
     return true
   }
+  
+  func enableHashTagDetection(dictionary:[String:AnyObject]) {
+    var error:NSError?
+    let regex = NSRegularExpression(pattern:kRegexStringForHashTag, options: NSRegularExpressionOptions.allZeros, error: &error)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
+    enablePatternDetection(descriptor)
+  }
+  
+  func disableHashTagDetection() {
+    disablePatternDetection(patternDescriptorDictionary[kRegexStringForHashTag]!)
+  }
+  
+  func enableUserHandleDetection(dictionary:[String:AnyObject]) {
+    var error:NSError?
+    let regex = NSRegularExpression(pattern:kRegexStringForUserHandle, options: NSRegularExpressionOptions.allZeros, error: &error)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
+    enablePatternDetection(descriptor)
+  }
+  
+  func disableUserHandleDetection() {
+    disablePatternDetection(patternDescriptorDictionary[kRegexStringForUserHandle]!)
+  }
+  
+  func enableURLDetection(dictionary:[String:AnyObject]) {
+    var error:NSError?
+    let regex = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: &error)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
+    enablePatternDetection(descriptor)
+  }
+  
+  func disableURLDetection() {
+    let key = String(NSTextCheckingType.Link.rawValue)
+    disablePatternDetection(patternDescriptorDictionary[key]!)
+  }
+  
+  func enableStringDetection(string:String,dictionary:[String:AnyObject]) {
+    var error:NSError?
+    let pattern = String(format: kRegexFormatForSearchWord,string)
+    let regex = NSRegularExpression(pattern:pattern, options: NSRegularExpressionOptions.allZeros, error: &error)
+    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
+    enablePatternDetection(descriptor)
+  }
+  
+  func disableStringDetection(string:String) {
+    let key = kRegexFormatForSearchWord + string
+    disablePatternDetection(patternDescriptorDictionary[key]!)
+  }
+  
+  func enableDetectionForStrings(stringsArray:[String],dictionary:[String:AnyObject]) {
+    for string in stringsArray {
+      enableStringDetection(string, dictionary: dictionary)
+    }
+  }
+  
+  func disableDetectionForStrings(stringsArray:[String]) {
+    for string in stringsArray {
+      disableStringDetection(string)
+    }
+  }
+  
+  func enablePatternDetection(patternDescriptor:PatternDescriptor) {
+    let patternKey = patternNameKeyForPatternDescriptor(patternDescriptor)
+    patternDescriptorDictionary[patternKey] = patternDescriptor
+    addPatternAttributes(patternDescriptor)
+  }
+  
+  func disablePatternDetection(patternDescriptor:PatternDescriptor) {
+    let patternKey = patternNameKeyForPatternDescriptor(patternDescriptor)
+    patternDescriptorDictionary.removeValueForKey(patternKey)
+    removePatternAttributes(patternDescriptor)
+  }
+  
+  // MARK - Pattern Matching
+  
+  /**
+  This method searches ranges for patternDescriptor and stores in rangeAttributeDictionary,
+  adds corresponding entry to self.rangeAttributeDictionary.
+  Then the attributes are added to those ranges depending upon the following conditions
+  
+  1. The range is not truncated by truncation token
+  
+  2. The range is out of bound of current textStorage
+  
+  @param patternDescriptor : PatternDescriptor
+  */
+  
+  func addPatternAttributes(patternDescriptor:PatternDescriptor) {
+    if attributedText.length > 0 {
+      //Generate ranges for attributed text of the label
+      let patternRanges = patternDescriptor.patternRangesForString(attributedText.string)
+      for rangeValue in patternRanges { //Apply attributes to the ranges conditionally
+        rangeAttributesDictionary[rangeValue] = patternDescriptor.patternAttributes
+        //        if () {[self isRangeTruncated:obj.rangeValue
+        //        self.truncatedPatternRange = obj.rangeValue;
+        //        }else {obj.rangeValue.location < self.textStorage.length
+        textkitStack.textStorage.addAttributes(patternDescriptor.patternAttributes!, range: rangeValue)
+        let rect = textkitStack.boundingRectForRange(rangeValue, enclosingRect: self.bounds)
+        setNeedsDisplayInRect(rect)
+      }
+    }
+  }
+  
+  func removePatternAttributes(patternDescriptor:PatternDescriptor) {
+    if attributedText.length > 0 {
+      //Generate ranges for attributed text of the label
+      let patternRanges = patternDescriptor.patternRangesForString(attributedText.string)
+      for range in patternRanges { //Remove attributes from the ranges conditionally
+        if let attributes = patternDescriptor.patternAttributes {
+          for (name,NSObject) in attributes {
+            textkitStack.textStorage.removeAttribute(name, range: range)
+          }
+          let rect = textkitStack.boundingRectForRange(range, enclosingRect: self.bounds)
+          setNeedsDisplayInRect(rect)
+        }
+      }
+    }
+  }
+  //    This method returns the key for the given PatternDescriptor stored in patternDescriptorDictionary.
+  //    In patternDescriptorDictionary, each entry has the format (NSString, PatternDescriptor).
+  //    @param: PatternDescriptor
+  //    @return: NSString
+  func patternNameKeyForPatternDescriptor(patternDescriptor:PatternDescriptor)-> String {
+    let key:String
+    if patternDescriptor.patternExpression.isKindOfClass(NSDataDetector) {
+      let types = (patternDescriptor.patternExpression as! NSDataDetector).checkingTypes
+      key = String(types)
+    }else {
+      key = patternDescriptor.patternExpression.pattern;
+      
+    }
+    return key
+  }
+
 }
 
 //extension NSAttributedString {

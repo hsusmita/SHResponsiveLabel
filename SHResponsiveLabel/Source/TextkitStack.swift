@@ -109,7 +109,18 @@ internal class TextkitStack:NSObject {
 		}
 		return textOffset
 	}
-	
+  
+  func boundingRectForRange(range:NSRange,enclosingRect:CGRect)-> CGRect {
+    var glyphRange = NSMakeRange(NSNotFound, 0)
+    layoutManager.characterRangeForGlyphRange(range, actualGlyphRange: &glyphRange)
+    
+    var rect = layoutManager.boundingRectForGlyphRange(glyphRange, inTextContainer: textContainer)
+    let totalGlyphRange = layoutManager.glyphRangeForTextContainer(textContainer)
+    let point = textOffsetForGlyphRange(totalGlyphRange,rect:enclosingRect)
+    rect.origin.y += point.y
+    return rect
+  }
+  
 	func rectFittingText(size:CGSize, lineCount:Int, font:UIFont)-> CGRect {
 		textContainer.size = size
 		self.textContainer.maximumNumberOfLines = lineCount
@@ -182,4 +193,8 @@ internal class TextkitStack:NSObject {
     return touchAttributesSet
   }
 
+  func hasText()-> Bool {
+    return self.textStorage.length > 0
+  }
+  
 }
