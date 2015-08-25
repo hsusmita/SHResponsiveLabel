@@ -35,6 +35,7 @@ public struct PatternDescriptor {
 		self.searchType = searchType
 		self.patternAttributes = patternAttributes
 	}
+  
 	
 	/**
 	Generates array of ranges for the matches found in given string

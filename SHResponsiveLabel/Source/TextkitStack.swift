@@ -170,29 +170,7 @@ internal class TextkitStack:NSObject {
     }
     return rangeOfText
   }
-  //  This method checks whether the given index can handle touch
-  //  Touch will be handled if any of these attributes are set: RLTapResponderAttributeName
-  //  or RLHighlightedBackgroundColorAttributeName
-  //  or RLHighlightedForegroundColorAttributeName
-  //  @param index: NSInteger - Index to be checked
-  //  @return It returns a BOOL incating if touch handling is enabled or not
-  
-  func shouldHandleTouchAtIndex(index : NSInteger)-> Bool {
-    var touchAttributesSet = false
-    if index < textStorage.length {
-      var rangePointer = NSRangePointer()
-      if let dictionary =  textStorage.attributesAtIndex(index, effectiveRange: rangePointer) as [NSObject:AnyObject]? {
-        let keys = dictionary.keys.filter({keyString -> Bool in
-          return  keyString == RLTapResponderAttributeName1 ||
-            keyString == RLHighlightedBackgroundColorAttributeName1 ||
-            keyString == RLHighlightedForegroundColorAttributeName1
-        }).array
-        touchAttributesSet = keys.count > 0
-      }
-    }
-    return touchAttributesSet
-  }
-
+ 
   func hasText()-> Bool {
     return self.textStorage.length > 0
   }
@@ -222,9 +200,7 @@ internal class TextkitStack:NSObject {
   }
   
   func rangeForTextInsertion(text:NSString)-> NSRange {
-//    textContainer.size = self.bounds.size
     let glyphIndex = layoutManager.glyphIndexForCharacterAtIndex(textStorage.length-1)
-    
     var range = layoutManager.truncatedGlyphRangeInLineFragmentForGlyphAtIndex(glyphIndex)
     if (range.length > 0) {
       range.length += text.length

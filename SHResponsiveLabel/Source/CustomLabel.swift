@@ -11,17 +11,15 @@ import UIKit
 
 public class CustomLabel: UILabel {
   
-    let textkitStack:TextkitStack
-    var patternDescriptorDictionary: [String:PatternDescriptor]
-    var rangeAttributesDictionary:[NSValue:[String:AnyObject]]
+    let textkitStack:PatternTextkitStack
+    var selectedRange: NSRange?
+    var currentAttributedString: NSAttributedString?
     
     var truncationToken : NSString?
-    
     var truncatedPatternRange : NSRange?
     var truncatedRange: NSRange?
-  
     var attributedTruncationToken : NSAttributedString?
-
+    
     var customTruncationEnabled : Bool {
       didSet {
         setNeedsDisplay()
@@ -29,23 +27,21 @@ public class CustomLabel: UILabel {
     }
 
   override init(frame: CGRect) {
-  		textkitStack = TextkitStack()
-      patternDescriptorDictionary =  Dictionary()
-      rangeAttributesDictionary = Dictionary()
-      customTruncationEnabled = false
-  		super.init(frame: frame)
-  
-  //		setup()
-  		configureGestures()
-  	}
+    textkitStack = PatternTextkitStack()
+    customTruncationEnabled = false
+    
+    selectedRange = NSMakeRange(NSNotFound, 0)
+    currentAttributedString = NSAttributedString()
+    super.init(frame: frame)
+    
+    configureGestures()
+  }
   	override public func layoutSubviews() {
   		textkitStack.textContainer.size = self.bounds.size;
   	}
   	required public init(coder aDecoder: NSCoder) {
   
-  		textkitStack = TextkitStack()
-      patternDescriptorDictionary =  Dictionary()
-      rangeAttributesDictionary = Dictionary()
+  		textkitStack = PatternTextkitStack()
       customTruncationEnabled = false
 
   		super.init(coder: aDecoder)
@@ -118,8 +114,6 @@ public class CustomLabel: UILabel {
       NSParagraphStyleAttributeName : paragraph]
   }
   
-  
-  
   public override func drawTextInRect(rect: CGRect) {
       self.customTruncationEnabled ? appendTokenIfNeeded() : removeTokenIfPresent()
     		textkitStack.drawTextInRect(rect)
@@ -153,10 +147,11 @@ public class CustomLabel: UILabel {
   func updateTruncationToken(truncationToken:NSAttributedString,action:PatternTapResponder) {
     //Disable old pattern if present
     if let tokenString = attributedTruncationToken as NSAttributedString? {
-      let patternKey = kRegexFormatForSearchWord + tokenString.string
-      if let descriptor = patternDescriptorDictionary[patternKey] {
-        disablePatternDetection(descriptor)
-      }
+      let patternKey = String(format: kRegexFormatForSearchWord,tokenString.string)
+      textkitStack.disablePatternDetection(patternKey)
+//      if let descriptor = patternDescriptorDictionary[patternKey] {
+//        disablePatternDetection(descriptor)
+//      }
     }
     attributedTruncationToken = truncationToken
     var error = NSErrorPointer()
@@ -171,55 +166,49 @@ public class CustomLabel: UILabel {
         enablePatternDetection(descriptor)
       }
     }
-    
   }
-
   
   func enableHashTagDetection(dictionary:[String:AnyObject]) {
-    var error:NSError?
-    let regex = NSRegularExpression(pattern:kRegexStringForHashTag, options: NSRegularExpressionOptions.allZeros, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
-    enablePatternDetection(descriptor)
+    textkitStack.enablePatternDetection(kRegexStringForHashTag, dictionary: dictionary)
+    setNeedsDisplay()
   }
   
   func disableHashTagDetection() {
-    disablePatternDetection(patternDescriptorDictionary[kRegexStringForHashTag]!)
+    textkitStack.disablePatternDetection(kRegexStringForHashTag)
+    setNeedsDisplay()
   }
   
   func enableUserHandleDetection(dictionary:[String:AnyObject]) {
-    var error:NSError?
-    let regex = NSRegularExpression(pattern:kRegexStringForUserHandle, options: NSRegularExpressionOptions.allZeros, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
-    enablePatternDetection(descriptor)
+    textkitStack.enablePatternDetection(kRegexStringForUserHandle, dictionary: dictionary)
+    setNeedsDisplay()
   }
   
   func disableUserHandleDetection() {
-    disablePatternDetection(patternDescriptorDictionary[kRegexStringForUserHandle]!)
+    textkitStack.disablePatternDetection(kRegexStringForUserHandle)
+    setNeedsDisplay()
   }
   
   func enableURLDetection(dictionary:[String:AnyObject]) {
-    var error:NSError?
-    let regex = NSDataDetector(types: NSTextCheckingType.Link.rawValue, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
-    enablePatternDetection(descriptor)
+    textkitStack.enableDataDetector(NSTextCheckingType.Link, dictionary: dictionary)
+    setNeedsDisplay()
+
   }
   
   func disableURLDetection() {
-    let key = String(NSTextCheckingType.Link.rawValue)
-    disablePatternDetection(patternDescriptorDictionary[key]!)
+    textkitStack.disableDataDetector(NSTextCheckingType.Link)
+    setNeedsDisplay()
   }
   
   func enableStringDetection(string:String,dictionary:[String:AnyObject]) {
-    var error:NSError?
-    let pattern = String(format: kRegexFormatForSearchWord,string)
-    let regex = NSRegularExpression(pattern:pattern, options: NSRegularExpressionOptions.allZeros, error: &error)
-    let descriptor = PatternDescriptor(regularExpression: regex!, searchType: PatternSearchType.All, patternAttributes: dictionary)
-    enablePatternDetection(descriptor)
+    let key = String(format:kRegexFormatForSearchWord,string)
+    textkitStack.enablePatternDetection(key, dictionary: dictionary)
+    setNeedsDisplay()
   }
   
   func disableStringDetection(string:String) {
-    let key = kRegexFormatForSearchWord + string
-    disablePatternDetection(patternDescriptorDictionary[key]!)
+    let key = String(format:kRegexFormatForSearchWord,string)
+    textkitStack.disablePatternDetection(key)
+    setNeedsDisplay()
   }
   
   func enableDetectionForStrings(stringsArray:[String],dictionary:[String:AnyObject]) {
@@ -235,86 +224,15 @@ public class CustomLabel: UILabel {
   }
   
   func enablePatternDetection(patternDescriptor:PatternDescriptor) {
-    let patternKey = patternNameKeyForPatternDescriptor(patternDescriptor)
-    patternDescriptorDictionary[patternKey] = patternDescriptor
-    addPatternAttributes(patternDescriptor)
+    textkitStack.enablePatternDetection(patternDescriptor)
+    setNeedsDisplay()
   }
   
   func disablePatternDetection(patternDescriptor:PatternDescriptor) {
-    let patternKey = patternNameKeyForPatternDescriptor(patternDescriptor)
-    patternDescriptorDictionary.removeValueForKey(patternKey)
-    removePatternAttributes(patternDescriptor)
+    textkitStack.disablePatternDetection(patternDescriptor)
+    setNeedsDisplay()
   }
-  
-  // MARK - Pattern Matching
-  
-  /**
-  This method searches ranges for patternDescriptor and stores in rangeAttributeDictionary,
-  adds corresponding entry to self.rangeAttributeDictionary.
-  Then the attributes are added to those ranges depending upon the following conditions
-  
-  1. The range is not truncated by truncation token
-  
-  2. The range is out of bound of current textStorage
-  
-  @param patternDescriptor : PatternDescriptor
-  */
-  
-  func addPatternAttributes(patternDescriptor:PatternDescriptor) {
-    if attributedText.length > 0 {
-      //Generate ranges for attributed text of the label
-      let patternRanges = patternDescriptor.patternRangesForString(attributedText.string)
-      for range in patternRanges { //Apply attributes to the ranges conditionally
-        rangeAttributesDictionary[range] = patternDescriptor.patternAttributes
-        if isRangeTruncated(range) {
-          truncatedPatternRange = range
-        }else if range.location < textkitStack.textStorage.length {
-          textkitStack.textStorage.addAttributes(patternDescriptor.patternAttributes!, range: range)
-          
-        }
-        let rect = textkitStack.boundingRectForRange(range, enclosingRect: self.bounds)
-        setNeedsDisplayInRect(rect)
-      }
-    }
-  }
-  
-  func removePatternAttributes(patternDescriptor:PatternDescriptor) {
-    if attributedText.length > 0 {
-      //Generate ranges for attributed text of the label
-      let patternRanges = patternDescriptor.patternRangesForString(attributedText.string)
-      for range in patternRanges { //Remove attributes from the ranges conditionally
-        rangeAttributesDictionary.removeValueForKey(NSValue(range: range))
-        if let attributes = patternDescriptor.patternAttributes {
-          if isRangeTruncated(range) {
-           self.truncatedPatternRange = NSMakeRange(NSNotFound, 0)
-          }else if range.location < textkitStack.textStorage.length {
-            for (name,NSObject) in attributes {
-              textkitStack.textStorage.removeAttribute(name, range: range)
-            }
-          }
-          let rect = textkitStack.boundingRectForRange(range, enclosingRect: self.bounds)
-          setNeedsDisplayInRect(rect)
-        }
-      }
-    }
-  }
-  //    This method returns the key for the given PatternDescriptor stored in patternDescriptorDictionary.
-  //    In patternDescriptorDictionary, each entry has the format (NSString, PatternDescriptor).
-  //    @param: PatternDescriptor
-  //    @return: NSString
-  func patternNameKeyForPatternDescriptor(patternDescriptor:PatternDescriptor)-> String {
-    let key:String
-    if patternDescriptor.patternExpression.isKindOfClass(NSDataDetector) {
-      let types = (patternDescriptor.patternExpression as! NSDataDetector).checkingTypes
-      key = String(types)
-    }else {
-      key = patternDescriptor.patternExpression.pattern;
-      
-    }
-    return key
-  }
-
-}
+ }
 
 //extension NSAttributedString {
 //	func wordWrappedAttributedString()-> NSAttributedString {
@@ -338,13 +256,13 @@ public class CustomLabel: UILabel {
 
 extension CustomLabel {
 
-  public override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+ /* public override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
     let gesture = UITapGestureRecognizer()
 
     let touchLocation = (touches.first as! UITouch).locationInView(self)
     let index = textkitStack.characterIndexAtLocation(touchLocation)
     println("index = \(index)")
-//    let rangeOfTappedText = textkitStack.rangeLocation(touchLocation)
+    let rangeOfTappedText = textkitStack.rangeLocation(touchLocation)
 //     let shouldDetectTouch = textkitStack.shouldHandleTouchAtIndex(index) && !patternTouchInProgress()
 //    var rangeOfTappedText = NSMakeRange(NSNotFound, 0)
 //    if let currentString = textStorage as NSAttributedString? {
@@ -369,17 +287,97 @@ extension CustomLabel {
   }
 
   public override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-//    if patternTouchInProgress() && shouldHandleTouchAtIndex(selectedRange!.location) {
-//      removeHighlightingForIndex(selectedRange!.location)
-//      dispatch_after(dispatch_time(DISPATCH_TIME_NOW,Int64(0.05 * Double(NSEC_PER_SEC))),
-//        dispatch_get_main_queue(),{
-//          self.handleTouchEnd()
-//      })
-//    }else {
-//      super.touchesEnded(touches, withEvent: event)
-//    }
+    if selectedRange.location != NSNotFound && shouldHandleTouchAtIndex(selectedRange.location) {
+      removeHighlightingForIndex(selectedRange.location)
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW,Int64(0.05 * Double(NSEC_PER_SEC))),
+        dispatch_get_main_queue(),{
+          self.handleTouchEnd()
+      })
+    }else {
+      super.touchesEnded(touches, withEvent: event)
+    }
   }
+  //  This method checks whether the given index can handle touch
+  //  Touch will be handled if any of these attributes are set: RLTapResponderAttributeName
+  //  or RLHighlightedBackgroundColorAttributeName
+  //  or RLHighlightedForegroundColorAttributeName
+  //  @param index: NSInteger - Index to be checked
+  //  @return It returns a BOOL incating if touch handling is enabled or not
+  
+  func shouldHandleTouchAtIndex(index : NSInteger)-> Bool {
+    var touchAttributesSet = false
+    let textStorage = textkitStack.textStorage
+    if index < textStorage.length {
+      var rangePointer = NSRangePointer()
+      if let dictionary =  textStorage.attributesAtIndex(index, effectiveRange: rangePointer) as [NSObject:AnyObject]? {
+        let keys = dictionary.keys.filter({keyString -> Bool in
+          return  keyString == RLTapResponderAttributeName1 ||
+            keyString == RLHighlightedBackgroundColorAttributeName1 ||
+            keyString == RLHighlightedForegroundColorAttributeName1
+        }).array
+        touchAttributesSet = keys.count > 0
+      }
+    }
+    return touchAttributesSet
+  }
+}
+func addHighlightingForIndex(index:Int) {
+  if (index < self.textStorage.length) {
+    var patternRange = NSMakeRange(NSNotFound, 0)
+    
+    if let backgroundcolor = textStorage.attribute(RLHighlightedBackgroundColorAttributeName,atIndex:index,effectiveRange:&patternRange) as? UIColor {
+      textStorage.addAttribute(NSBackgroundColorAttributeName, value: backgroundcolor, range: patternRange)
+    }
+    if let foregroundcolor = textStorage.attribute(RLHighlightedForegroundColorAttributeName,atIndex:index,effectiveRange:&patternRange) as? UIColor {
+      textStorage.addAttribute(NSForegroundColorAttributeName, value: foregroundcolor, range: patternRange)
+    }
+    self.redrawTextForRange(patternRange)
+  }
+}
 
+func removeHighlightingForIndex(index:Int) {
+  if let range = selectedRange {
+    if index < textStorage.length {
+      var patternRange = NSMakeRange(NSNotFound, 0)
+      
+      if let backgroundcolor = currentAttributedString!.attribute(NSBackgroundColorAttributeName,atIndex:index,effectiveRange:&patternRange) as? UIColor {
+        textStorage.addAttribute(NSBackgroundColorAttributeName, value: backgroundcolor, range: patternRange)
+      }else {
+        textStorage.removeAttribute(NSBackgroundColorAttributeName, range: patternRange)
+      }
+      if let foregroundcolor = currentAttributedString!.attribute(NSForegroundColorAttributeName,atIndex:index,effectiveRange:&patternRange) as? UIColor {
+        textStorage.addAttribute(NSForegroundColorAttributeName, value: foregroundcolor, range: patternRange)
+      }
+      self.redrawTextForRange(patternRange)
+    }
+  }
+  
+}
+func handleTouchBeginForRange(range:NSRange) {
+  if (!patternTouchInProgress()) {
+    //Set global variable
+    selectedRange = range
+    currentAttributedString = NSMutableAttributedString(attributedString: textStorage)
+    addHighlightingForIndex(range.location)
+  }
+}
+
+func handleTouchEnd() {
+  if patternTouchInProgress() {
+    
+    performActionAtIndex(selectedRange!.location)
+  }
+  //Clear global Variable
+  selectedRange = nil
+  currentAttributedString = nil
+}
+
+func handleTouchCancelled() {
+  if patternTouchInProgress() {
+    removeHighlightingForIndex(self.selectedRange!.location)
+  }
+  selectedRange = NSMakeRange(NSNotFound, 0)
+  currentAttributedString = nil*/
 }
 
 extension CustomLabel {
@@ -405,7 +403,7 @@ extension CustomLabel {
         // set truncated range
         self.truncatedRange = NSMakeRange(tokenRange.location, textkitStack.textStorage.length - tokenRange.location)
         // set truncatedPatternRange
-        for range in self.rangeAttributesDictionary.keys {
+        for range in textkitStack.rangeAttributesDictionary.keys {
           if isRangeTruncated(range.rangeValue) {
             self.truncatedPatternRange = range.rangeValue
           }
@@ -453,7 +451,7 @@ extension CustomLabel {
   
   func addAttributeForTruncatedRange() {
     if let truncatedRange = self.truncatedPatternRange {
-      if let patternAttributes = self.rangeAttributesDictionary[truncatedRange] {
+      if let patternAttributes = textkitStack.rangeAttributesDictionary[truncatedRange] {
         textkitStack.textStorage.addAttributes(patternAttributes, range: truncatedRange)
       }
     }
@@ -464,7 +462,7 @@ extension CustomLabel {
     let tokenRange = storageString.rangeOfString(attributedTruncationToken!.string)
     if (tokenRange.length > 0 && self.truncatedPatternRange?.length > 0) {
       let range =  self.truncatedPatternRange!
-      if let patternAttributes = self.rangeAttributesDictionary[range] {
+      if let patternAttributes = textkitStack.rangeAttributesDictionary[range] {
         for (key,value) in patternAttributes {
           textkitStack.textStorage.removeAttribute(key, range: range)
         }
@@ -476,10 +474,11 @@ extension CustomLabel {
     let storageString = textkitStack.textStorage.string as NSString
     let truncationRange = storageString.rangeOfString(attributedTruncationToken!.string)
     if (truncationRange.length > 0) {
-      let key = kRegexFormatForSearchWord + self.attributedTruncationToken!.string
-      if let descriptor = self.patternDescriptorDictionary[key] {
-        textkitStack.textStorage.addAttributes(descriptor.patternAttributes!, range: truncationRange)
-      }
+//      let key = String(format: kRegexFormatForSearchWord, arguments: self.attributedTruncationToken!.string)
+//      textkitStack.enablePatternDetection(<#patternDescriptor: PatternDescriptor#>)
+//      if let descriptor = self.patternDescriptorDictionary[key] {
+//        textkitStack.textStorage.addAttributes(descriptor.patternAttributes!, range: truncationRange)
+//      }
     }
   }
   

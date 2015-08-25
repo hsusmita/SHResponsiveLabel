@@ -18,6 +18,7 @@ class MainViewController: UIViewController {
     super.viewDidLoad()
     customLabel.text = "Hello #hashtag @username some more text www.google.com some more text some more textsome more text hsusmita4@gmail.com"
     label.text = "Hello #hashtag @username some more text www.google.com some more text some more textsome more text hsusmita4@gmail.com"
+label.enableStringDetection("more",dictionary: [NSForegroundColorAttributeName:UIColor.brownColor()])
 //    //Detects email in text
 //    let emailRegexString = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 //    var error = NSErrorPointer()
@@ -105,16 +106,17 @@ class MainViewController: UIViewController {
   @IBAction func handleSegmentChange(sender:UISegmentedControl) {
     switch(segmentControl.selectedSegmentIndex) {
     case 0:
+    let action = PatternTapResponder {(tappedString)-> (Void) in
+        let messageString = "You have tapped token string"
+        self.messageLabel.text = messageString}
+
       let token = NSAttributedString(string: "...More",
         attributes: [NSFontAttributeName:self.customLabel.font,
           NSForegroundColorAttributeName:UIColor.brownColor(),
           RLHighlightedBackgroundColorAttributeName:UIColor.blackColor(),
-          RLHighlightedForegroundColorAttributeName:UIColor.greenColor()])
-      let action = PatternTapResponder {(tappedString)-> (Void) in
-        let messageString = "You have tapped token string"
-        self.messageLabel.text = messageString}
-      customLabel.setAttributedTruncationToken(token, action: action)
-      label.setAttributedTruncationToken(token, action: action)
+          RLHighlightedForegroundColorAttributeName:UIColor.greenColor(),RLTapResponderAttributeName:action])
+            customLabel.setAttributedTruncationToken(token, action: action)
+      label.setAttributedTruncationToken(token,action: action)
       
     case 1:
       let action = PatternTapResponder {(tappedString)-> (Void) in

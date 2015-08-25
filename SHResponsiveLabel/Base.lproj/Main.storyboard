@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFh-Vn-sLz">
-                                <rect key="frame" x="229" y="199" width="143" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFh-Vn-sLz">
+                                <rect key="frame" x="229" y="189" width="143" height="30"/>
                                 <state key="normal" title="TableViewCell Usage">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -36,8 +36,8 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2Z-Dn-p2o" userLabel="MessageLabel">
-                                <rect key="frame" x="265" y="249" width="70" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2Z-Dn-p2o" userLabel="MessageLabel">
+                                <rect key="frame" x="265" y="239" width="70" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -62,8 +62,8 @@
                                     </mask>
                                 </variation>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q1f-zI-2v1">
-                                <rect key="frame" x="16" y="341" width="568" height="259"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q1f-zI-2v1">
+                                <rect key="frame" x="16" y="351" width="568" height="249"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ijo-dX-Cd7">
                                         <rect key="frame" x="143" y="0.0" width="283" height="40"/>
@@ -326,6 +326,7 @@
                     <connections>
                         <outlet property="customLabel" destination="Fgi-WB-U2L" id="bZB-Sv-wJv"/>
                         <outlet property="label" destination="gtW-go-gcU" id="wxK-gA-IR1"/>
+                        <outlet property="messageLabel" destination="R2Z-Dn-p2o" id="TWp-BH-M76"/>
                         <outlet property="segmentControl" destination="oSH-pN-Sy3" id="5IW-Ev-FLv"/>
                     </connections>
                 </viewController>
